@@ -1,0 +1,81 @@
+// ArraysHW. Creates an Array of bouncing balls with random velocities, colors and sizes. Class Ball should be in a seperate file in the program.
+//BounceHW using Arrays
+
+Ball [] ballList;
+
+void setup() {
+  size( 1400, 600 );
+  ballList = new Ball[250];
+
+  for (int i=0; i < ballList.length; i++) {
+    ballList[i] = new Ball(random(1400), random(height), 30.00, 45, 23, 2, 0.7 );
+  }
+}
+
+void draw() {
+  background( 128 );
+  for (int i=0; i< ballList.length; i++) {
+    ballList[i].render();
+    ballList[i].move();
+  }
+}
+class Ball { /* start of Ball class */
+
+  float x;
+  float y;
+  float radius;
+  float velocityX;
+  float velocityY;
+  float r = random(225);
+  float g = random(225);
+  float b = random(225);
+  float bounciness;
+  float distance;
+
+  Ball ( float _x, float _y, float _radius, float r, float g, float b, float _bounciness) { 
+    x = _x;///
+    y = _y;///random(0,600)
+    radius = _radius =random(15,40); 
+    velocityX = random( -4.0, 4.0 );
+    velocityY = random( -4.0, 4.0 );
+    bounciness = 0.7;
+  }
+
+
+  void render ( ) {
+    noStroke();
+    fill( r, g, b );
+
+    ellipse( x, y, radius * 2, radius * 2 );
+  }
+
+  void move() {
+    distance = dist(mouseX, mouseY, x, y);
+    x = x + velocityX;
+    y = y + velocityY;
+
+    //mousePressed= balls within 200 distance move away from mouse
+    if (mousePressed && distance<200) {
+      velocityX = (x - mouseX)/distance;
+      velocityY = (y - mouseY)/distance;
+   /// everything below limits the balls to staying within the window
+    } else if ((x + radius) > width) {
+      velocityX = velocityX * -1.0 * bounciness;
+      velocityY *= bounciness;
+      x = width - radius;
+    } else if ((x-radius)<0){
+      velocityX = velocityX * -1.0 * bounciness;
+      velocityY *= bounciness;
+      x = radius;}
+      
+    if ((y - radius) < 0) {
+      velocityY = velocityY * -1.0 * bounciness;
+      velocityX *= bounciness;
+      y = radius;
+    } else if ((y + radius) > height) {
+      velocityY = velocityY * -1.0 * bounciness;
+      velocityX *= bounciness;
+      y = height - radius;
+    }
+  }
+}
