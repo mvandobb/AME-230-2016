@@ -1,0 +1,68 @@
+///Programmed to create a line graph of temperatures in March over the last 100 years in Processing. Created for AME 230.
+
+float[] temp;
+float graphMinX;
+
+float graphMaxX;
+float graphMinY;
+float graphMaxY;
+float graphWidth;
+float graphHeight;
+float margin;
+
+void setup() {
+  size( 1200, 800 );
+  String[] lines = loadStrings( "us_avg_temp_1895-2015.csv" );
+
+  temp = new float[lines.length];
+
+  for (int i = 0; i < lines.length; i++) {
+    String[] items = split( lines[i], "," );
+    temp[i] = float(items[1]);
+  }
+
+  margin = 80;
+  graphMinX = margin;
+  graphMaxX = width - margin;
+  graphMinY = margin;
+  graphMaxY = height - margin;
+  graphWidth = graphMaxX - graphMinX;
+  graphHeight = graphMaxY - graphMinY;
+}
+
+void draw() {
+  background( 128 );
+  stroke( 250 );
+  noFill();
+  rect( graphMinX, graphMinY, graphWidth, graphHeight );
+  textSize(32);
+  text("Contiguous U.S. Average Temperature in March", 225, 75);
+  text("Year", 600, 750);
+  /// spell out temperature vertically, I didn't use Baseline
+  text("T", 40, 250, 200);
+  text("e", 40, 275, 200);
+  text("m", 40, 300, 200);
+  text("p", 40, 325, 200);
+  text("e", 40, 350, 200);
+  text("r", 40, 375, 200);
+  text("a", 40, 400, 200);
+  text("t", 40, 425, 200);
+  text("u", 40, 450, 200);
+  text("r", 40, 475, 200);
+  text("e", 40, 500, 200);
+
+
+  float barWidth = graphWidth / temp.length;
+  for (int i = 0; i < (temp.length-4); i++) {
+    float x = graphMinX + i * barWidth;
+    float y = graphMinY;
+    float barHeight = map( temp[i], 0, 80, 0, graphHeight );
+    stroke( 250 );
+    fill( 255, 178, 77 );
+    rect( x, graphMaxY - barHeight, barWidth, 7 );
+      
+    //my attempt at calculate the distance between the points in order to draw the line for the line graph
+   // float pointDistX = dist(x, barWidth, x, y);
+   // float pointDistY = dist(graphMaxY - barHeight, 7.00, 0, 0);
+   //line (x, pointDistX,y, pointDistX);
+  }}
